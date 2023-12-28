@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy6mLZiL5fBo8eIIpFfMz4C+1bT3ZlE+Ik" crossorigin="anonymous">
+  <!-- Optional: Include jQuery and Popper.js for Bootstrap's JavaScript plugins -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"
+    integrity="sha384-iT5WvCzQUCtqEUNP1Z0E5wI8Prf8Q5cIih9f3W/56kD9qNpTsoj4tI0vWgWjN2Fq"
+    crossorigin="anonymous"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy6mLZiL5fBo8eIIpFfMz4C+1bT3ZlE+Ik"
+    crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href=" {{url_for('static', filename='style/index.css')}}">
+  
+
+
+
+  <title>Task Manager</title>
+</head>
+
+<body>
+
+  <h1>Task Manager</h1>
+
+  <!-- Form to add a new task -->
+  <form action="/add_task" enctype="multipart/form-data" method="post">
+    <label for="taskDescription">Task Description:</label>
+    <input type="text" id="taskDescription" name="taskDescription" required>
+    <input type="file" name="image">
+    <button type="submit">Add Task</button>
+  </form>
+
+
+  <!-- Display success messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div>
+    {% for category, message in messages %}
+    {% if category == 'success' %}
+    <p style="color: green;">{{ message }}</p>
+    {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+
+  <!-- Display error messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div>
+    {% for category, message in messages %}
+    {% if category == 'error' %}
+    <p style="color: red;">{{ message }}</p>
+    {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+
+  <!-- Rest of your HTML template -->
+
+
+  <!-- Display the list of tasks -->
+  <h2>Task List</h2>
+  <ul>
+    {% for task in tasks %}
+    <li>
+      {{ task.id }} <span> {{ task.description }}</span>
+      {% if task.image%}
+      <img style="width: 40px; height: 40px;" src="{{ url_for('static', filename='images/' + task.image) }}" alt="Task Image">
+      {% endif %}
+      <button><a href="{{ url_for('remove_task', task_id=loop.index) }}" class="btn btn-primary">Remove</a></button>
+      <a href="{{ url_for('edit_task', task_id=loop.index) }}">Edit</a>
+      
+    </li>
+    <hr>
+    {% endfor %}
+  </ul>
+
+</body>
+
+</html>
