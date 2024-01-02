@@ -135,7 +135,7 @@
               {% endif %}
               <td>
                 <div class=" d-flex justify-content-between">
-                  <a class="btn btn-primary" href="{{ url_for('remove_task', task_id=loop.index) }}">Edit</a>
+                  <a class="btn btn-primary" href="{{ url_for('edit_task', task_id=loop.index) }}">Edit</a>
                   <a class="btn btn-danger" href="{{ url_for('remove_task', task_id=loop.index) }}">Delete</a>
                 </div>
               </td>
